@@ -3,6 +3,7 @@ class_name Walker
 
 var Directions = [Vector2.RIGHT, Vector2.UP,  Vector2.DOWN]
 
+var should_place_room = true
 var position = Vector2.ZERO
 var direction = Vector2.DOWN
 var borders = Rect2()
@@ -39,15 +40,17 @@ func step():
 		return false
 
 func change_direction():
-	place_room()
+	if should_place_room:
+		place_room()
 	steps_since_turn = 0
 	var directions = Directions.duplicate()
 	directions.erase(direction)
 
-	if position.x + direction.x > 35 and can_go_left == false:
-		directions.append(Vector2.LEFT)
-		Directions.append(Vector2.LEFT)
-		can_go_left = true
+#	if position.x + direction.x > 35 and can_go_left == false:
+#		directions.append(Vector2.LEFT)
+#		Directions.append(Vector2.LEFT)
+#		can_go_left = true
+#		should_place_room = false
 
 	directions.shuffle()
 	direction = directions.pop_front()

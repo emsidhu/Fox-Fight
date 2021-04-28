@@ -3,11 +3,13 @@ extends KinematicBody2D
 onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
+onready var swordHitbox = $HitboxPivot/SwordHitbox
+onready var hurtbox = $Hurtbox
 
-const ACCELERATION = 400
-const MAX_SPEED = 80
-const ROLL_SPEED = 100
-const FRICTION = 400
+export var ACCELERATION = 400
+export var MAX_SPEED = 80
+export var ROLL_SPEED = 120
+export var FRICTION = 400
 
 enum {
 	MOVE,
@@ -18,9 +20,12 @@ enum {
 var state = MOVE
 var velocity = Vector2.ZERO
 var roll_vector = Vector2.RIGHT
+var stats = PlayerStats
 
 func _ready():
+	stats.connect("no_health", self, "queue_free")
 	animationTree.active = true
+	swordHitbox.knockback_vector = Vector2.RIGHT
 
 func _physics_process(delta):
 	match state:
@@ -42,6 +47,7 @@ func move_state(delta):
 	
 	if input_vector != Vector2.ZERO:
 		roll_vector = input_vector
+		swordHitbox.knockback_vector = input_vector
 		animationTree.set("parameters/Idle/blend_position", input_vector)
 		animationTree.set("parameters/Run/blend_position", input_vector)
 		animationTree.set("parameters/Attack/blend_position", input_vector)
@@ -57,8 +63,13 @@ func move_state(delta):
 	
 	if Input.is_action_just_pressed("attack"):
 		state = ATTACK
+		
 	if Input.is_action_just_pressed("roll"):
 		state = ROLL
+		hurtbox.start_invincibility(0.48)
+		
+	if Input.is_action_just_pressed("restart"):
+		get_tree().reload_current_scene()
 		
 func roll_state(delta):
 	velocity = roll_vector * ROLL_SPEED
@@ -73,9 +84,17 @@ func move():
 	velocity = move_and_slide(velocity)
 	
 func roll_animation_finished():
-	velocity = velocity/1.25
+	velocity = velocity/1.5
 	state = MOVE
 	
 func attack_animation_finished():
 	state = MOVE
 	
+
+
+func _on_Hurtbox_area_entered(area):
+	hurtbox.start_invincibility(1)
+	hurtbox.create_hit_effect()
+	stats.health -= 1
+	if area.is_in_group("MeleeEnemy"):
+		area.get_parent().knockback = position.direction_to(area.get_parent().position) * 200
