@@ -7,6 +7,7 @@ onready var sprite = $AnimatedSprite
 onready var hurtbox = $Hurtbox
 onready var softCollision = $SoftCollision
 onready var wanderController = $WanderController
+onready var animationPlayer = $AnimationPlayer
 
 export var ACCELERATION = 300
 export var MAX_SPEED = 50
@@ -83,6 +84,7 @@ func _on_Hurtbox_area_entered(area):
 	hurtbox.create_hit_effect()
 	stats.health -= area.damage
 	knockback = area.knockback_vector * 160
+	hurtbox.start_invincibility(0.4)
 
 func create_death_effect():
 	var enemyDeathEffect = EnemyDeathEffect.instance()
@@ -96,3 +98,11 @@ func _on_Stats_no_health():
 	
 
 
+
+
+func _on_Hurtbox_invincibility_started():
+	animationPlayer.play("Start")
+
+
+func _on_Hurtbox_invincibility_ended():
+	animationPlayer.play("Stop")

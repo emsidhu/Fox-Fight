@@ -1,7 +1,7 @@
 extends Node
 class_name Walker
 
-var Directions = [Vector2.RIGHT, Vector2.UP,  Vector2.DOWN]
+var Directions = [Vector2.RIGHT, Vector2.UP, Vector2.DOWN, Vector2.LEFT]
 
 var should_place_room = true
 var position = Vector2.ZERO
@@ -17,11 +17,11 @@ func _init(starting_position, new_borders):
 	position = starting_position
 	step_history.append(position)
 	borders = new_borders
+	place_room()
 
 func walk(steps):
-	place_room()
 	for step in steps:
-		if steps_since_turn >= 7:
+		if randf() <= 0.5 or steps_since_turn >= 6:
 			change_direction()
 		
 		if step():
@@ -40,23 +40,24 @@ func step():
 		return false
 
 func change_direction():
-	if should_place_room:
-		place_room()
+
 	steps_since_turn = 0
 	var directions = Directions.duplicate()
-	directions.erase(direction)
+
 
 #	if position.x + direction.x > 35 and can_go_left == false:
 #		directions.append(Vector2.LEFT)
 #		Directions.append(Vector2.LEFT)
 #		can_go_left = true
 #		should_place_room = false
-
+	directions.erase(direction)
 	directions.shuffle()
 	direction = directions.pop_front()
+	
 	while not borders.has_point(position + direction):
+		Directions.append(direction * -1)
 		direction = directions.pop_front()
-		
+	
 func create_room(position, size):
 	return {position = position, size = size}
 		
@@ -70,12 +71,18 @@ func place_room():
 			if borders.has_point(new_step):
 				step_history.append(new_step)
 				
-func get_end_room():
-	var end_room = rooms.pop_front()
+func get_end():
+	var end = step_history.pop_front()
 	var starting_position = step_history.front()
-	for room in rooms:
-		if starting_position.distance_to(room.position) > starting_position.distance_to(end_room.position):
-			end_room = room
-	return end_room
-
+	for step in step_history:
+		if starting_position.distance_to(step) > starting_position.distance_to(end):
+			end = step
+	return end
+#	var end_room = rooms.pop_front()
+#	var starting_position = step_history.front()
+#	for room in rooms:
+#		if starting_position.distance_to(room.position) > starting_position.distance_to(end_room.position):
+#			end_room = room
+#	return end_room
+	
 

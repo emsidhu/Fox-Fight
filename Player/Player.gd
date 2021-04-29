@@ -1,10 +1,13 @@
 extends KinematicBody2D
 
+const PlayerHurtSound = preload("res://Player/PlayerHurtSound.tscn")
+
 onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $HitboxPivot/SwordHitbox
 onready var hurtbox = $Hurtbox
+onready var blinkAnimationPlayer = $BlinkAnimationPlayer
 
 export var ACCELERATION = 400
 export var MAX_SPEED = 80
@@ -33,7 +36,7 @@ func _physics_process(delta):
 			move_state(delta)
 			
 		ROLL:
-			roll_state(delta)
+			roll_state()
 			
 		ATTACK:
 			attack_state()
@@ -69,9 +72,10 @@ func move_state(delta):
 		hurtbox.start_invincibility(0.48)
 		
 	if Input.is_action_just_pressed("restart"):
+# warning-ignore:return_value_discarded
 		get_tree().reload_current_scene()
 		
-func roll_state(delta):
+func roll_state():
 	velocity = roll_vector * ROLL_SPEED
 	animationState.travel("Roll")
 	move()
@@ -93,8 +97,19 @@ func attack_animation_finished():
 
 
 func _on_Hurtbox_area_entered(area):
-	hurtbox.start_invincibility(1)
+	hurtbox.start_invincibility(0.6)
 	hurtbox.create_hit_effect()
-	stats.health -= 1
+	stats.health -= area.damage
+	var playerHurtSound = PlayerHurtSound.instance()
+	get_tree().current_scene.add_child(playerHurtSound)
 	if area.is_in_group("MeleeEnemy"):
 		area.get_parent().knockback = position.direction_to(area.get_parent().position) * 200
+	
+
+
+func _on_Hurtbox_invincibility_started():
+	blinkAnimationPlayer.play("Start")
+
+
+func _on_Hurtbox_invincibility_ended():
+	blinkAnimationPlayer.play("Stop")
