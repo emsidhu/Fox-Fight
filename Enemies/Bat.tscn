@@ -93,6 +93,7 @@ tracks/0/keys = {
 }
 
 [node name="Bat" type="KinematicBody2D" groups=[
+"Enemies",
 "MeleeEnemy",
 ]]
 collision_layer = 24
@@ -102,7 +103,6 @@ script = ExtResource( 3 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = SubResource( 14 )
 frames = SubResource( 6 )
-frame = 2
 playing = true
 offset = Vector2( 0, -12 )
 

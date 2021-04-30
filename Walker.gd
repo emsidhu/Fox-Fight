@@ -50,7 +50,9 @@ func change_direction():
 #		Directions.append(Vector2.LEFT)
 #		can_go_left = true
 #		should_place_room = false
-	directions.erase(direction)
+	if randf() > 0.5:
+		directions.erase(direction * -1)
+
 	directions.shuffle()
 	direction = directions.pop_front()
 	
