@@ -8,6 +8,8 @@ onready var animationState = animationTree.get("parameters/playback")
 onready var swordHitbox = $HitboxPivot/SwordHitbox
 onready var hurtbox = $Hurtbox
 onready var blinkAnimationPlayer = $BlinkAnimationPlayer
+onready var chargeTimer = $ChargeTimer
+onready var chargeAnimationPlayer = $ChargeAnimationPlayer
 
 export var ACCELERATION = 400
 export var MAX_SPEED = 80
@@ -24,6 +26,7 @@ var state = MOVE
 var velocity = Vector2.ZERO
 var roll_vector = Vector2.RIGHT
 var stats = PlayerStats
+var is_charged = false
 
 func _ready():
 	stats.connect("no_health", self, "queue_free")
@@ -37,7 +40,7 @@ func _physics_process(delta):
 			
 		ROLL:
 			roll_state()
-			
+		
 		ATTACK:
 			attack_state()
 
@@ -54,7 +57,9 @@ func move_state(delta):
 		animationTree.set("parameters/Idle/blend_position", input_vector)
 		animationTree.set("parameters/Run/blend_position", input_vector)
 		animationTree.set("parameters/Attack/blend_position", input_vector)
+		animationTree.set("parameters/ChargeAttack/blend_position", input_vector)
 		animationTree.set("parameters/Roll/blend_position", input_vector)
+
 		
 		animationState.travel("Run")
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
@@ -65,6 +70,9 @@ func move_state(delta):
 	move()
 	
 	if Input.is_action_just_pressed("attack"):
+		chargeTimer.start(1)
+	
+	if Input.is_action_just_released("attack"):
 		state = ATTACK
 		
 	if Input.is_action_just_pressed("roll"):
@@ -79,10 +87,19 @@ func roll_state():
 	velocity = roll_vector * ROLL_SPEED
 	animationState.travel("Roll")
 	move()
+
+
 	
 func attack_state():
 	velocity = Vector2.ZERO
-	animationState.travel("Attack")
+	if is_charged == true:
+		chargeAnimationPlayer.play("Uncharge")
+		animationState.travel("ChargeAttack")
+	else:
+
+		animationState.travel("Attack")
+	chargeTimer.stop()
+	
 	
 func move():
 	velocity = move_and_slide(velocity)
@@ -93,7 +110,7 @@ func roll_animation_finished():
 	
 func attack_animation_finished():
 	state = MOVE
-	
+	is_charged = false
 
 
 func _on_Hurtbox_area_entered(area):
@@ -113,3 +130,12 @@ func _on_Hurtbox_invincibility_started():
 
 func _on_Hurtbox_invincibility_ended():
 	blinkAnimationPlayer.play("Stop")
+
+
+
+
+func _on_ChargeTimer_timeout():
+	if Input.is_action_pressed("attack"):
+		is_charged = true
+		print(is_charged)
+		chargeAnimationPlayer.play("Charge")

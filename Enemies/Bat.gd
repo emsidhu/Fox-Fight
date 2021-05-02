@@ -10,7 +10,7 @@ onready var wanderController = $WanderController
 onready var animationPlayer = $AnimationPlayer
 
 export var ACCELERATION = 300
-export var MAX_SPEED = 70
+export var MAX_SPEED = 65
 export var FRICTION = 200
 export var SOFTPOWER = 400
 export var TARGET_RANGE = 4
@@ -95,7 +95,7 @@ func create_death_effect():
 
 
 func _on_Stats_no_health():
-	emit_signal("died", position)
+	emit_signal("died", global_position)
 	create_death_effect()
 	queue_free()
 	

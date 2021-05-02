@@ -1,13 +1,15 @@
 extends Node2D
 
 const Player = preload("res://Player/Player.tscn")
-const Exit = preload("res://ExitDoor.tscn")
+const Exit = preload("res://World/ExitDoor.tscn")
 const Bat = preload("res://Enemies/Bat.tscn")
-const Grass = preload("res://World/Grass.tscn")
+const Chest = preload("res://Items/Chest.tscn")
 
 var borders = Rect2(1, 1, 46, 41)
 var enemies = []
 var num_of_enemies = 10
+var num_of_chests = 0
+var chest_spawn_chance = 0
 var level_num = 0
 
 onready var wallTileMap = $WallTileMap
@@ -47,6 +49,7 @@ func reload_level():
 
 func _input(event):
 	if event.is_action_pressed("restart"):
+		PlayerStats.health = 6
 		reload_level()
 
 func create_enemies(enemy):
@@ -66,13 +69,24 @@ func place_enemies(player, map):
 					ySort.add_child(new_enemy)
 					new_enemy.position = location * 32
 					create_enemies(new_enemy)
-					new_enemy.connect("died", self, "spawn_chest")
+					new_enemy.connect("died", self, "enemy_died")
 					new_enemy.get_node("WanderController").start_position = location * 32
 
+func enemy_died(enemy_pos):
+	var current_enemies = get_tree().get_nodes_in_group("Enemies").size()
+	var chest_depreciation = 1
+	if num_of_chests > 0:
+		chest_depreciation = 20
+	if current_enemies <= num_of_enemies / 2:
+		chest_spawn_chance = 0.1 / num_of_enemies / chest_depreciation
+		
+	if randf() <= chest_spawn_chance or current_enemies - 1 == 0 and num_of_chests == 0:
+		num_of_chests += 1
+		if num_of_chests <= 2:
+			spawn_chest(enemy_pos)
+			
 func spawn_chest(enemy_pos):
-	if get_tree().get_nodes_in_group("Enemies").size() <= num_of_enemies / 2:
-			var grass = Grass.instance()
-			ySort.call_deferred("add_child", grass)
-			grass.call_deferred("set", "position", enemy_pos)
-
-					
+	var chest = Chest.instance()
+	ySort.call_deferred("add_child", chest)
+	chest.call_deferred("set", "global_position", enemy_pos)
+ 
