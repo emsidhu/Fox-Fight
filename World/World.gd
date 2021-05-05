@@ -2,7 +2,6 @@ extends Node2D
 
 const Player = preload("res://Player/Player.tscn")
 const Exit = preload("res://World/ExitDoor.tscn")
-const Bat = preload("res://Enemies/Bat.tscn")
 const Chest = preload("res://Items/Chest.tscn")
 
 var borders = Rect2(1, 1, 46, 41)
@@ -11,6 +10,7 @@ var num_of_enemies = 10
 var num_of_chests = 0
 var chest_spawn_chance = 0
 var level_num = 0
+var objects = []
 
 onready var wallTileMap = $WallTileMap
 onready var dirtPathTileMap = $DirtPathTileMap
@@ -44,7 +44,10 @@ func generate_level():
 	wallTileMap.update_bitmask_region(borders.position, borders.end)
 	
 	place_enemies(player, map)
+	place_objects(map)
 func reload_level():
+	LevelStats.current_level += 1
+# warning-ignore:return_value_discarded
 	get_tree().reload_current_scene()
 
 func _input(event):
@@ -65,13 +68,40 @@ func place_enemies(player, map):
 					if (location * 32).distance_to(enemy) < 80:
 						can_place_enemy = false
 				if can_place_enemy:
-					var new_enemy = Bat.instance()
+					var new_enemy = AllEnemies.get_enemy().instance()
 					ySort.add_child(new_enemy)
 					new_enemy.position = location * 32
 					create_enemies(new_enemy)
 					new_enemy.connect("died", self, "enemy_died")
-					new_enemy.get_node("WanderController").start_position = location * 32
+					new_enemy.get_node("WanderController").start_position = (location * 32) + Vector2(8, 8)
 
+func create_object(object_pos):
+	objects.append(object_pos)
+
+func place_objects(map):
+	var can_place_object = true
+	for location in map:
+		can_place_object = true
+		if randf() < 0.2:
+			var object_pos = 1
+			var new_object = AllObjects.get_object().instance()
+			
+			if new_object.name == "Tree":
+				if randf() < 0.5:
+					object_pos = (location * 32) + Vector2(14, randi() % 16 + 1)
+				else:
+					object_pos = (location * 32) + Vector2(30, randi() % 16 + 1)
+			elif new_object.name == "Grass":
+				object_pos = (location * 32) + Vector2(randi() % 16 + 1, randi() % 16 + 1)
+			
+			for object in objects:
+				if object_pos.distance_to(object) < 32:
+					can_place_object = false
+			if can_place_object:
+				ySort.add_child(new_object)
+				new_object.position = object_pos
+				create_object(object_pos)
+			
 func enemy_died(enemy_pos):
 	var current_enemies = get_tree().get_nodes_in_group("Enemies").size()
 	var chest_depreciation = 1

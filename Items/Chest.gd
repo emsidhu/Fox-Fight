@@ -14,5 +14,5 @@ func _on_Hurtbox_area_entered(area):
 			var item = AllItems.get_item().instance()
 			get_parent().get_parent().call_deferred("add_child", item)
 			item.call_deferred("set", "global_position", global_position)
-			item.get_node("ItemBounce").call_deferred("set", "global_position", global_position + Vector2(0, 12))
+			item.get_node("ItemBounce/ItemBounceArea").call_deferred("set", "global_position", global_position + Vector2(0, 12))
 			is_open = true

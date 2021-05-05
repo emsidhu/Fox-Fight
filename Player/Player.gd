@@ -70,7 +70,7 @@ func move_state(delta):
 	move()
 	
 	if Input.is_action_just_pressed("attack"):
-		chargeTimer.start(1)
+		chargeTimer.start(0.5)
 	
 	if Input.is_action_just_released("attack"):
 		state = ATTACK
@@ -135,7 +135,6 @@ func _on_Hurtbox_invincibility_ended():
 
 
 func _on_ChargeTimer_timeout():
-	if Input.is_action_pressed("attack"):
+	if Input.is_action_pressed("attack") and not is_charged:
 		is_charged = true
-		print(is_charged)
 		chargeAnimationPlayer.play("Charge")

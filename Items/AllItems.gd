@@ -1,9 +1,10 @@
 extends Node
 
 const HeartCanister = preload("res://Items/Heart Canister.tscn")
+const FullHeal = preload("res://Items/FullHeal.tscn")
 
 var held_items = []
-var all_items = [HeartCanister]
+var all_items = [HeartCanister, FullHeal]
 
 func get_item():
 	var choice = all_items[randi() % all_items.size()]

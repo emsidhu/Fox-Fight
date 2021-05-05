@@ -60,8 +60,8 @@ func change_direction():
 		Directions.append(direction * -1)
 		direction = directions.pop_front()
 	
-func create_room(position, size):
-	return {position = position, size = size}
+func create_room(room_position, size):
+	return {position = room_position, size = size}
 		
 func place_room():
 	var size = Vector2(randi() % 3 + 3,randi() % 4 + 2)

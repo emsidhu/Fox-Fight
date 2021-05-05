@@ -4,9 +4,11 @@
 [ext_resource path="res://World/Tree.png" type="Texture" id=2]
 
 [sub_resource type="CapsuleShape2D" id=1]
-height = 12.0
+radius = 7.77777
+height = 0.0
 
 [node name="Tree" type="StaticBody2D"]
+scale = Vector2( 0.8, 0.8 )
 
 [node name="Shadow" type="Sprite" parent="."]
 texture = ExtResource( 1 )
@@ -16,7 +18,5 @@ position = Vector2( 0, -16 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 0, -2 )
 rotation = 1.5708
 shape = SubResource( 1 )

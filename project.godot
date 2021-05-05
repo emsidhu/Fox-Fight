@@ -28,6 +28,9 @@ config/icon="res://icon.png"
 
 PlayerStats="*res://Player/PlayerStats.tscn"
 AllItems="*res://Items/AllItems.tscn"
+AllEnemies="*res://Enemies/AllEnemies.tscn"
+AllObjects="*res://World/AllObjects.gd"
+LevelStats="*res://LevelStats.tscn"
 
 [display]
 

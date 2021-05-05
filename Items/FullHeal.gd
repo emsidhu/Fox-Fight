@@ -6,6 +6,5 @@ func _physics_process(_delta):
 			pickup()
 
 func pickup():
-	PlayerStats.max_health += 1
-	PlayerStats.health += 1
+	PlayerStats.health = PlayerStats.max_health
 	queue_free()

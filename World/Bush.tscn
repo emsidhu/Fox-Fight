@@ -8,6 +8,7 @@ radius = 8.0
 height = 10.6356
 
 [node name="Bush" type="StaticBody2D"]
+scale = Vector2( 0.9, 0.9 )
 collision_mask = 0
 
 [node name="ShadowSprite" type="Sprite" parent="."]
