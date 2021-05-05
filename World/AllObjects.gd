@@ -2,8 +2,9 @@ extends Node
 
 const Grass = preload("res://World/Grass.tscn")
 const TreeObject = preload("res://World/Tree.tscn")
+const Bush = preload("res://World/Bush.tscn")
 
-var object_list = [Grass, Grass, TreeObject]
+var object_list = [Grass, Grass, TreeObject, Bush]
 
 func get_object():
 	#use str2var() for possible object spawns later

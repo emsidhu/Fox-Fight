@@ -86,11 +86,11 @@ func place_objects(map):
 			var object_pos = 1
 			var new_object = AllObjects.get_object().instance()
 			
-			if new_object.name == "Tree":
+			if new_object.name == "Tree" or new_object.name == "Bush":
 				if randf() < 0.5:
 					object_pos = (location * 32) + Vector2(14, randi() % 16 + 1)
 				else:
-					object_pos = (location * 32) + Vector2(30, randi() % 16 + 1)
+					object_pos = (location * 32) + Vector2(20, randi() % 16 + 1)
 			elif new_object.name == "Grass":
 				object_pos = (location * 32) + Vector2(randi() % 16 + 1, randi() % 16 + 1)
 			
