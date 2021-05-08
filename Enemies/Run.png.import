@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cmngogndv(1).png-4bf17a6b433e0e850b310a1be1bb5f88.stex"
+path="res://.import/Run.png-7cd0b5b79c724129a2fff5fed85b4ce1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Menus/cmngogndv(1).png"
-dest_files=[ "res://.import/cmngogndv(1).png-4bf17a6b433e0e850b310a1be1bb5f88.stex" ]
+source_file="res://Enemies/Run.png"
+dest_files=[ "res://.import/Run.png-7cd0b5b79c724129a2fff5fed85b4ce1.stex" ]
 
 [params]
 

@@ -167,8 +167,8 @@ height = 0.0
 radius = 76.8104
 
 [sub_resource type="CapsuleShape2D" id=8]
-radius = 6.61474
-height = 0.0
+radius = 7.0
+height = 12.0
 
 [sub_resource type="CircleShape2D" id=9]
 radius = 6.45998
@@ -207,17 +207,18 @@ tracks/0/keys = {
 "Enemies",
 "MeleeEnemy",
 ]]
+position = Vector2( 1, 1 )
 collision_layer = 24
 collision_mask = 5
 script = SubResource( 1 )
-MAX_SPEED = 50
+MAX_SPEED = 40
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = SubResource( 15 )
 position = Vector2( 0, -6 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 5 )
-frame = 1
+frame = 2
 playing = true
 
 [node name="ShadowSprite" type="Sprite" parent="."]
@@ -236,6 +237,7 @@ position = Vector2( -0.117985, -6.0172 )
 shape = SubResource( 16 )
 
 [node name="Stats" parent="." instance=ExtResource( 5 )]
+max_health = 3
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 1 )]
 
@@ -248,7 +250,6 @@ shape = SubResource( 7 )
 visible = false
 position = Vector2( -0.117985, -5.54527 )
 collision_mask = 4
-damage = 2
 
 [node name="CollisionShape2D" parent="Hitbox" index="0"]
 shape = SubResource( 8 )

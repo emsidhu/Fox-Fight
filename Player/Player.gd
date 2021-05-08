@@ -93,10 +93,11 @@ func roll_state():
 func attack_state():
 	velocity = Vector2.ZERO
 	if is_charged == true:
+		swordHitbox.damage = 2
 		chargeAnimationPlayer.play("Uncharge")
 		animationState.travel("ChargeAttack")
 	else:
-
+		swordHitbox.damage = 1
 		animationState.travel("Attack")
 	chargeTimer.stop()
 	

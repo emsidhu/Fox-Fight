@@ -48,3 +48,7 @@ func set_paused(value: bool) -> void:
 	pauseOverlay.visible = paused
 
 
+
+
+func _on_ResumeButton_button_up():
+	self.paused = false

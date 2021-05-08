@@ -82,13 +82,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ChangeSceneBtn" parent="PauseOverlay/PauseMenu" instance=ExtResource( 7 )]
+[node name="ResumeButton" type="Button" parent="PauseOverlay/PauseMenu"]
 margin_right = 68.0
-margin_bottom = 29.0
+margin_bottom = 17.0
+grow_horizontal = 2
+text = "Resume"
+
+[node name="ChangeSceneBtn" parent="PauseOverlay/PauseMenu" instance=ExtResource( 7 )]
+margin_top = 21.0
+margin_right = 68.0
+margin_bottom = 39.0
 text = "Main Menu"
 next_scene_path = "res://Menus/MainMenu.tscn"
 
 [node name="QuitBtn" parent="PauseOverlay/PauseMenu" instance=ExtResource( 6 )]
-margin_top = 33.0
+margin_top = 43.0
 margin_right = 68.0
 margin_bottom = 62.0
+
+[connection signal="button_up" from="PauseOverlay/PauseMenu/ResumeButton" to="." method="_on_ResumeButton_button_up"]

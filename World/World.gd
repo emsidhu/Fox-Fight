@@ -71,7 +71,7 @@ func place_enemies(player, map):
 				if can_place_enemy:
 					var new_enemy = AllEnemies.get_enemy().instance()
 					ySort.add_child(new_enemy)
-					new_enemy.position = location * 32
+					new_enemy.position = location * 32 + Vector2(8, 8)
 					create_enemies(new_enemy)
 					new_enemy.connect("died", self, "enemy_died")
 					new_enemy.get_node("WanderController").start_position = (location * 32) + Vector2(8, 8)
