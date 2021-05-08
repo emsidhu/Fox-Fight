@@ -109,3 +109,6 @@ func _on_Hurtbox_invincibility_started():
 
 func _on_Hurtbox_invincibility_ended():
 	animationPlayer.play("Stop")
+
+
+

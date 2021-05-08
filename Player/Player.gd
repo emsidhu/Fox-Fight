@@ -29,7 +29,7 @@ var stats = PlayerStats
 var is_charged = false
 
 func _ready():
-	stats.connect("no_health", self, "queue_free")
+	stats.connect("no_health", self, "died")
 	animationTree.active = true
 	swordHitbox.knockback_vector = Vector2.RIGHT
 
@@ -131,10 +131,10 @@ func _on_Hurtbox_invincibility_started():
 func _on_Hurtbox_invincibility_ended():
 	blinkAnimationPlayer.play("Stop")
 
-
-
-
 func _on_ChargeTimer_timeout():
 	if Input.is_action_pressed("attack") and not is_charged:
 		is_charged = true
 		chargeAnimationPlayer.play("Charge")
+		
+func died():
+	get_tree().change_scene("res://Menus/GameOver.tscn")

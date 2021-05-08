@@ -52,9 +52,10 @@ func reload_level():
 
 func _input(event):
 	if event.is_action_pressed("restart"):
-		PlayerStats.health = 6
+		PlayerStats.health = PlayerStats.max_health
 		reload_level()
-
+	if event.is_action_pressed("pickup"):
+		PlayerStats.health = PlayerStats.max_health
 func create_enemies(enemy):
 	enemies.append(enemy.position)
 	
@@ -119,4 +120,3 @@ func spawn_chest(enemy_pos):
 	var chest = Chest.instance()
 	ySort.call_deferred("add_child", chest)
 	chest.call_deferred("set", "global_position", enemy_pos)
- 

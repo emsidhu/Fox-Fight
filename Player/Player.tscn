@@ -1071,7 +1071,6 @@ graph_offset = Vector2( 0, -108.326 )
 height = 12.0
 
 [sub_resource type="StreamTexture" id=59]
-load_path = "res://.import/charge slash.png-fc2b2619dcefe9a6de9c2262d45028fd.stex"
 
 [sub_resource type="CapsuleShape2D" id=60]
 radius = 5.0
