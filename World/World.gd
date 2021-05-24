@@ -6,7 +6,7 @@ const Chest = preload("res://Items/Chest.tscn")
 
 var borders = Rect2(1, 1, 46, 41)
 var enemies = []
-var num_of_enemies = 10
+var num_of_enemies = 8
 var num_of_chests = 0
 var chest_spawn_chance = 0
 var level_num = 0
@@ -24,7 +24,7 @@ func _ready():
 
 func generate_level():
 	var walker = Walker.new(Vector2(23, 20), borders)
-	var map = walker.walk(200)
+	var map = walker.walk(150)
 	
 	var player = Player.instance()
 	ySort.add_child(player)
@@ -45,17 +45,16 @@ func generate_level():
 	
 	place_enemies(player, map)
 	place_objects(map)
+
 func reload_level():
 	LevelStats.current_level += 1
 # warning-ignore:return_value_discarded
-	get_tree().reload_current_scene()
+	get_tree().change_scene("res://Menus/SaveMenu.tscn")
 
 func _input(event):
 	if event.is_action_pressed("restart"):
 		PlayerStats.health = PlayerStats.max_health
 		reload_level()
-	if event.is_action_pressed("pickup"):
-		PlayerStats.health = PlayerStats.max_health
 func create_enemies(enemy):
 	enemies.append(enemy.position)
 	
@@ -64,7 +63,7 @@ func place_enemies(player, map):
 	for location in map:
 		can_place_enemy = true
 		if randf() < 0.1 and enemies.size() < num_of_enemies:
-			if (location * 32).distance_to(player.position) > 128:
+			if (location * 32).distance_to(player.position) > 150:
 				for enemy in enemies:
 					if (location * 32).distance_to(enemy) < 80:
 						can_place_enemy = false
@@ -81,9 +80,10 @@ func create_object(object_pos):
 
 func place_objects(map):
 	var can_place_object = true
+	var i = 0
 	for location in map:
 		can_place_object = true
-		if randf() < 0.2:
+		if randf() < 0.2 and i % 3 == 0:
 			var object_pos = 1
 			var new_object = AllObjects.get_object().instance()
 			
@@ -102,7 +102,7 @@ func place_objects(map):
 				ySort.add_child(new_object)
 				new_object.position = object_pos
 				create_object(object_pos)
-			
+		i += 1
 func enemy_died(enemy_pos):
 	var current_enemies = get_tree().get_nodes_in_group("Enemies").size()
 	var chest_depreciation = 1

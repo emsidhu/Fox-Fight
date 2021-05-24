@@ -12,9 +12,9 @@ onready var chargeTimer = $ChargeTimer
 onready var chargeAnimationPlayer = $ChargeAnimationPlayer
 
 export var ACCELERATION = 400
-export var MAX_SPEED = 80
-export var ROLL_SPEED = 120
-export var FRICTION = 400
+var MAX_SPEED = PlayerStats.speed
+export(float) var ROLL_SPEED = MAX_SPEED * 1.5
+export(float) var FRICTION = 400
 
 enum {
 	MOVE,
@@ -26,10 +26,12 @@ var state = MOVE
 var velocity = Vector2.ZERO
 var roll_vector = Vector2.RIGHT
 var stats = PlayerStats
+var damage = stats.damage
 var is_charged = false
 
+
 func _ready():
-	stats.connect("no_health", self, "died")
+	stats.connect("no_health", self, "queue_free")
 	animationTree.active = true
 	swordHitbox.knockback_vector = Vector2.RIGHT
 
@@ -73,11 +75,16 @@ func move_state(delta):
 		chargeTimer.start(0.5)
 	
 	if Input.is_action_just_released("attack"):
+		chargeTimer.stop()
 		state = ATTACK
 		
 	if Input.is_action_just_pressed("roll"):
+		chargeTimer.stop()
 		state = ROLL
 		hurtbox.start_invincibility(0.48)
+		if is_charged:
+			damage /= 2
+			is_charged = false
 		
 	if Input.is_action_just_pressed("restart"):
 # warning-ignore:return_value_discarded
@@ -93,25 +100,29 @@ func roll_state():
 func attack_state():
 	velocity = Vector2.ZERO
 	if is_charged == true:
-		swordHitbox.damage = 2
 		chargeAnimationPlayer.play("Uncharge")
 		animationState.travel("ChargeAttack")
 	else:
-		swordHitbox.damage = 1
 		animationState.travel("Attack")
-	chargeTimer.stop()
+	if Input.is_action_just_pressed("attack"):
+		chargeTimer.start(0.5)
 	
 	
 func move():
 	velocity = move_and_slide(velocity)
 	
 func roll_animation_finished():
+	if is_charged:
+		damage /= 2
+		is_charged = false
 	velocity = velocity/1.5
 	state = MOVE
 	
 func attack_animation_finished():
 	state = MOVE
-	is_charged = false
+	if is_charged:
+		damage /= 2
+		is_charged = false
 
 
 func _on_Hurtbox_area_entered(area):
@@ -120,13 +131,14 @@ func _on_Hurtbox_area_entered(area):
 	stats.health -= area.damage
 	var playerHurtSound = PlayerHurtSound.instance()
 	get_tree().current_scene.add_child(playerHurtSound)
-	if area.is_in_group("MeleeEnemy"):
-		area.get_parent().knockback = position.direction_to(area.get_parent().position) * 200
+	if area.is_in_group("MeleeEnemy") and not area.get_parent().is_in_group("Tutorial"):
+		area.get_parent().knockback = position.direction_to(area.get_parent().position) * 160
 	
 
 
 func _on_Hurtbox_invincibility_started():
-	blinkAnimationPlayer.play("Start")
+	if state != ROLL:
+		blinkAnimationPlayer.play("Start")
 
 
 func _on_Hurtbox_invincibility_ended():
@@ -135,7 +147,8 @@ func _on_Hurtbox_invincibility_ended():
 func _on_ChargeTimer_timeout():
 	if Input.is_action_pressed("attack") and not is_charged:
 		is_charged = true
+		damage *= 2
+		print(damage)
 		chargeAnimationPlayer.play("Charge")
 		
-func died():
-	get_tree().change_scene("res://Menus/GameOver.tscn")
+

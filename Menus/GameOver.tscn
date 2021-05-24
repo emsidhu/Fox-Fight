@@ -84,3 +84,8 @@ grow_vertical = 2
 custom_fonts/font = SubResource( 1 )
 text = "You got to floor %s!"
 align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="button_up" from="Menu/ChangeSceneBtn" to="." method="_on_ChangeSceneBtn_button_up"]

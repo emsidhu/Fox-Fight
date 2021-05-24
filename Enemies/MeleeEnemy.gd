@@ -14,6 +14,8 @@ export var MAX_SPEED = 65
 export var FRICTION = 200
 export var SOFTPOWER = 400
 export var TARGET_RANGE = 4
+export var KNOCKBACK_POWER = 200
+export var MAX_MODIFIED = 100
 
 enum {
 	IDLE,
@@ -24,10 +26,16 @@ enum {
 var velocity = Vector2.ZERO
 var knockback = Vector2.ZERO
 var state = IDLE
+var sprite_flipped = false
 
 signal died(value)
 
 func _ready():
+	MAX_SPEED *= LevelStats.move_speed_modifier
+	KNOCKBACK_POWER *= LevelStats.move_speed_modifier
+	stats.max_health *= LevelStats.health_modifier
+	stats.health = stats.max_health
+	MAX_SPEED = min(MAX_SPEED, MAX_MODIFIED)
 	pick_random_state([IDLE, WANDER])
 
 func _physics_process(delta):
@@ -70,7 +78,7 @@ func update_wander():
 func go_to(point, delta):
 	var direction = global_position.direction_to(point)
 	velocity = velocity.move_toward(direction * MAX_SPEED, ACCELERATION * delta)
-	sprite.flip_h = velocity.x < 0
+	sprite.flip_h = sprite_flipped
 	
 func seek_player():
 	if playerDetectionZone.can_see_player():
@@ -84,8 +92,8 @@ func pick_random_state(state_list):
 
 func _on_Hurtbox_area_entered(area):
 	hurtbox.create_hit_effect()
-	stats.health -= area.damage
-	knockback = area.knockback_vector * 160
+	stats.health -= area.get_parent().get_parent().damage
+	knockback = area.knockback_vector * KNOCKBACK_POWER
 	hurtbox.start_invincibility(0.4)
 
 func create_death_effect():

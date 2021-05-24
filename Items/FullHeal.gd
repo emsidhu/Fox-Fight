@@ -7,4 +7,6 @@ func _physics_process(_delta):
 
 func pickup():
 	PlayerStats.health = PlayerStats.max_health
-	queue_free()
+	audioStreamPlayer.playing = true
+	visible = false
+

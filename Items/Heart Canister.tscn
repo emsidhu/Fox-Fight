@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Items/Heart Canister.gd" type="Script" id=1]
 [ext_resource path="res://Items/Heart Canister.png" type="Texture" id=2]
 [ext_resource path="res://Items/ItemBounce.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Enemies/PlayerDetectionZone.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Items/ItemCollision.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Music and Sounds/332629__treasuresounds__item-pickup.ogg" type="AudioStream" id=6]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 11.4846
@@ -34,6 +35,10 @@ collision_layer = 0
 
 [node name="CollisionShape2D" parent="ItemCollision" index="0"]
 shape = SubResource( 2 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+volume_db = 4.0
 
 [editable path="PlayerDetectionZone"]
 [editable path="ItemCollision"]

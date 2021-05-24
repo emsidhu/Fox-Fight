@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://UI/PlayerUI.gd" type="Script" id=1]
 [ext_resource path="res://UI/HeartUIFull.png" type="Texture" id=2]
@@ -8,6 +8,11 @@
 [ext_resource path="res://UI/QuitBtn.tscn" type="PackedScene" id=6]
 [ext_resource path="res://UI/ChangeSceneBtn.tscn" type="PackedScene" id=7]
 [ext_resource path="res://UI/Fonts/montserrat_extrabold.otf" type="DynamicFontData" id=8]
+[ext_resource path="res://Items/DamageUp.png" type="Texture" id=9]
+[ext_resource path="res://Items/Full Heal.png" type="Texture" id=10]
+[ext_resource path="res://Items/Heart Canister.png" type="Texture" id=11]
+[ext_resource path="res://Items/Speed Boost.png" type="Texture" id=12]
+[ext_resource path="res://Music and Sounds/333040__christopherderp__videogame-menu-button-clicking-sound-11.wav" type="AudioStream" id=13]
 
 [sub_resource type="DynamicFont" id=1]
 size = 11
@@ -30,6 +35,9 @@ margin_right = 60.0
 margin_bottom = 12.0
 texture = ExtResource( 3 )
 stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HeartUIFull" type="TextureRect" parent="."]
 margin_right = 60.0
@@ -100,4 +108,165 @@ margin_top = 43.0
 margin_right = 68.0
 margin_bottom = 62.0
 
+[node name="InventoryOverlay" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.247059 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" parent="InventoryOverlay" instance=ExtResource( 5 )]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -57.0
+margin_bottom = -41.0
+text = "Held Items"
+
+[node name="InventoryMenu" type="HBoxContainer" parent="InventoryOverlay"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -68.0
+margin_top = -12.0
+margin_right = 68.0
+margin_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HeartCanisterSymbol" type="TextureRect" parent="InventoryOverlay/InventoryMenu"]
+margin_right = 31.0
+margin_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+
+[node name="NumLabel" type="Label" parent="InventoryOverlay/InventoryMenu/HeartCanisterSymbol"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = -1.50057
+margin_right = 4.0
+margin_bottom = -1.50057
+text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FullHealSymbol" type="TextureRect" parent="InventoryOverlay/InventoryMenu"]
+margin_left = 35.0
+margin_right = 66.0
+margin_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 10 )
+expand = true
+stretch_mode = 5
+
+[node name="NumLabel" type="Label" parent="InventoryOverlay/InventoryMenu/FullHealSymbol"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = -0.750839
+margin_right = 4.0
+margin_bottom = -0.750839
+text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpeedBoostSymbol" type="TextureRect" parent="InventoryOverlay/InventoryMenu"]
+margin_left = 70.0
+margin_right = 101.0
+margin_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 1
+
+[node name="NumLabel" type="Label" parent="InventoryOverlay/InventoryMenu/SpeedBoostSymbol"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -4.0
+margin_right = 1.0
+text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DamageUpSymbol" type="TextureRect" parent="InventoryOverlay/InventoryMenu"]
+margin_left = 105.0
+margin_right = 136.0
+margin_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 5
+
+[node name="NumLabel" type="Label" parent="InventoryOverlay/InventoryMenu/DamageUpSymbol"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 5.0
+text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemDescription" type="Label" parent="InventoryOverlay"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -160.0
+margin_top = 19.0
+margin_right = 160.0
+margin_bottom = 84.0
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+
+[connection signal="button_down" from="PauseOverlay/PauseMenu/ResumeButton" to="." method="_on_button_down"]
 [connection signal="button_up" from="PauseOverlay/PauseMenu/ResumeButton" to="." method="_on_ResumeButton_button_up"]
+[connection signal="button_down" from="PauseOverlay/PauseMenu/ChangeSceneBtn" to="." method="_on_button_down"]
+[connection signal="button_up" from="PauseOverlay/PauseMenu/ChangeSceneBtn" to="." method="_on_button_up"]
+[connection signal="button_down" from="PauseOverlay/PauseMenu/QuitBtn" to="." method="_on_button_down"]
+[connection signal="button_up" from="PauseOverlay/PauseMenu/QuitBtn" to="." method="_on_button_up"]
+[connection signal="mouse_entered" from="InventoryOverlay/InventoryMenu/HeartCanisterSymbol" to="." method="_on_HeartCanisterSymbol_mouse_entered"]
+[connection signal="mouse_exited" from="InventoryOverlay/InventoryMenu/HeartCanisterSymbol" to="." method="_on_Symbol_mouse_exited"]
+[connection signal="mouse_entered" from="InventoryOverlay/InventoryMenu/FullHealSymbol" to="." method="_on_FullHealSymbol_mouse_entered"]
+[connection signal="mouse_exited" from="InventoryOverlay/InventoryMenu/FullHealSymbol" to="." method="_on_Symbol_mouse_exited"]
+[connection signal="mouse_entered" from="InventoryOverlay/InventoryMenu/SpeedBoostSymbol" to="." method="_on_SpeedBoostSymbol_mouse_entered"]
+[connection signal="mouse_exited" from="InventoryOverlay/InventoryMenu/SpeedBoostSymbol" to="." method="_on_Symbol_mouse_exited"]
+[connection signal="mouse_entered" from="InventoryOverlay/InventoryMenu/DamageUpSymbol" to="." method="_on_DamageUpSymbol_mouse_entered"]
+[connection signal="mouse_exited" from="InventoryOverlay/InventoryMenu/DamageUpSymbol" to="." method="_on_Symbol_mouse_exited"]
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
