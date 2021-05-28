@@ -36,11 +36,10 @@ func generate_level():
 	exit.position = walker.get_end() * 32
 	exit.connect("leaving_level", self, "reload_level")
 	walker.queue_free()
+	
 	for location in map:
 		wallTileMap.set_cellv(location, -1)
-		dirtPathTileMap.set_cellv(location, -1)
-		
-	dirtPathTileMap.update_bitmask_region(borders.position, borders.end)
+
 	wallTileMap.update_bitmask_region(borders.position, borders.end)
 	
 	place_enemies(player, map)

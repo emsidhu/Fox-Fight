@@ -31,9 +31,9 @@ var sprite_flipped = false
 signal died(value)
 
 func _ready():
-	MAX_SPEED *= LevelStats.move_speed_modifier
-	KNOCKBACK_POWER *= LevelStats.move_speed_modifier
-	stats.max_health *= LevelStats.health_modifier
+	MAX_SPEED *= LevelStats.stat_multiplier
+	KNOCKBACK_POWER *= LevelStats.stat_multiplier
+	stats.max_health *= LevelStats.stat_multiplier
 	stats.health = stats.max_health
 	MAX_SPEED = min(MAX_SPEED, MAX_MODIFIED)
 	pick_random_state([IDLE, WANDER])

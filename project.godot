@@ -23,6 +23,7 @@ _global_script_class_icons={
 config/name="Roguelike Capstone"
 run/main_scene="res://Menus/MainMenu.tscn"
 config/use_custom_user_dir=true
+run/low_processor_mode=true
 config/icon="res://icon.png"
 config/version="0.0.1"
 

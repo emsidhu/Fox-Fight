@@ -6,8 +6,8 @@ func _ready():
 
 
 func _on_Chest_opening():
-	text = "Press E to pick up the item"
+	text = "Press E To Pick Up The Item"
 
 func item_picked_up(health):
 	if health > 1:
-		text = "Press I to open your inventory"
+		text = "Press I To See What Items You Have"
