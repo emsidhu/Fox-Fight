@@ -116,16 +116,17 @@ func _on_AudioStreamPlayer_finished():
 
 
 func _on_button_up():
-	var data = {
-		"current_level": 1,
-		"max_health" : 6,
-		"damage" : 75,
-		"held_items" : [],
-		"speed" : 80
-	}
-	
-	var file = File.new()
-	var error = file.open(save_path, File.WRITE)
-	if error == OK:
-		file.store_var(data)
-		file.close()
+	if not get_tree().current_scene.is_in_group("Tutorial"): 
+		var data = {
+			"current_level": 1,
+			"max_health" : 6,
+			"damage" : 75,
+			"held_items" : [],
+			"speed" : 80
+		}
+		
+		var file = File.new()
+		var error = file.open(save_path, File.WRITE)
+		if error == OK:
+			file.store_var(data)
+			file.close()

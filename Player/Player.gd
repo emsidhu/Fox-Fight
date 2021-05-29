@@ -10,10 +10,11 @@ onready var hurtbox = $Hurtbox
 onready var blinkAnimationPlayer = $BlinkAnimationPlayer
 onready var chargeTimer = $ChargeTimer
 onready var chargeAnimationPlayer = $ChargeAnimationPlayer
+onready var canAttackTimer = $CanAttackTimer
 
 export var ACCELERATION = 400
 var MAX_SPEED = PlayerStats.speed
-export(float) var ROLL_SPEED = MAX_SPEED * 1.5
+var ROLL_SPEED = MAX_SPEED * 1.5
 export(float) var FRICTION = 400
 
 enum {
@@ -86,10 +87,6 @@ func move_state(delta):
 			damage /= 2
 			is_charged = false
 		
-	if Input.is_action_just_pressed("restart"):
-# warning-ignore:return_value_discarded
-		get_tree().reload_current_scene()
-		
 func roll_state():
 	velocity = roll_vector * ROLL_SPEED
 	animationState.travel("Roll")
@@ -134,7 +131,6 @@ func _on_Hurtbox_area_entered(area):
 	if area.is_in_group("MeleeEnemy") and not area.get_parent().is_in_group("Tutorial"):
 		area.get_parent().knockback = position.direction_to(area.get_parent().position) * 160
 	
-
 
 func _on_Hurtbox_invincibility_started():
 	if state != ROLL:

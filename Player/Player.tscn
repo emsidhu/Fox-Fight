@@ -1495,7 +1495,6 @@ hframes = 60
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=[
 "Player",
 ]]
-visible = false
 rotation = -1.5708
 shape = SubResource( 2 )
 
@@ -1556,7 +1555,6 @@ disabled = true
 [node name="ChargeCollision" type="CollisionPolygon2D" parent="HitboxPivot/SwordHitbox" groups=[
 "Player",
 ]]
-visible = false
 position = Vector2( -4.44444, 2.22222 )
 polygon = PoolVector2Array( 5.66667, 13.3333, 4.55556, 28.8889, 13.4444, 23.3333, 26.7778, 7.77778, 27.8889, -10, 21.2222, -22.2222, 12.3333, -28.8889, 7.88889, -17.7778, 6, -13 )
 disabled = true
@@ -1574,7 +1572,6 @@ frame = 4
 [node name="Hurtbox" parent="." groups=[
 "Player",
 ] instance=ExtResource( 5 )]
-visible = false
 collision_layer = 4
 
 [node name="CollisionShape2D" parent="Hurtbox" index="0" groups=[
@@ -1586,7 +1583,6 @@ shape = SubResource( 59 )
 [node name="SoftCollision" parent="." groups=[
 "Player",
 ] instance=ExtResource( 8 )]
-visible = false
 
 [node name="CollisionShape2D" parent="SoftCollision" index="0" groups=[
 "Player",
@@ -1610,6 +1606,8 @@ process_mode = 0
 [node name="ChargeAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Charge = SubResource( 63 )
 anims/Uncharge = SubResource( 64 )
+
+[node name="CanAttackTimer" type="Timer" parent="."]
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_Hurtbox_area_entered"]
 [connection signal="invincibility_ended" from="Hurtbox" to="." method="_on_Hurtbox_invincibility_ended"]

@@ -50,10 +50,6 @@ func reload_level():
 # warning-ignore:return_value_discarded
 	get_tree().change_scene("res://Menus/SaveMenu.tscn")
 
-func _input(event):
-	if event.is_action_pressed("restart"):
-		PlayerStats.health = PlayerStats.max_health
-		reload_level()
 func create_enemies(enemy):
 	enemies.append(enemy.position)
 	

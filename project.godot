@@ -36,6 +36,10 @@ AllObjects="*res://World/AllObjects.gd"
 LevelStats="*res://LevelStats.tscn"
 BackgroundMusic="*res://Music and Sounds/BackgroundMusic.tscn"
 
+[debug]
+
+settings/stdout/print_fps=true
+
 [display]
 
 window/size/width=320
